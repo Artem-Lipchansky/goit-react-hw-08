@@ -4,7 +4,7 @@ import axios from "axios";
 axios.defaults.baseURL = "https://connections-api.herokuapp.com";
 
 const setAuthHeader = (token) => {
-  axios.defaults.headers.common ["Authorization"] = `Bearer ${token}`;
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 
 const clearAuthHeader = () => {
@@ -23,6 +23,7 @@ export const registr = createAsyncThunk(
     }
   }
 );
+
 export const logIn = createAsyncThunk(
   "auth/login",
   async (userInfo, thunkAPI) => {
@@ -35,6 +36,7 @@ export const logIn = createAsyncThunk(
     }
   }
 );
+
 export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     await axios.post("/users/logout");
@@ -47,18 +49,21 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
-    const reducState = thunkAPI.getState();
-    const savedToken = reducState.auth.token;
+    const state = thunkAPI.getState();
+    const savedToken = state.auth.token;
+
+    if (!savedToken) {
+      return thunkAPI.rejectWithValue("No saved token");
+    }
+
     setAuthHeader(savedToken);
 
-    const response = await axios.get("/users/current");
-    return response.data;
-  },
-  {
-    condition: (_, thunkAPI) => {
-      const reducState = thunkAPI.getState();
-      const savedToken = reducState.auth.token;
-      return savedToken !== null;
-    },
+    try {
+      const response = await axios.get("/users/current");
+      return response.data;
+    } catch (error) {
+      clearAuthHeader(); 
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
 );

@@ -4,7 +4,7 @@
     height: 20px;
   }
   .editBtn:hover {
-    color: rgb(255, 0, 0);
+    color: rgb(0, 17, 255);
   }
   
   .modalContainer .openBtn {
@@ -24,7 +24,7 @@
     transition: border ease-in-out 0ms;
   }
   .btnContainer .btnYes:hover {
-    border: 1.5px solid rgb(255, 0, 17);
+    border: 1.5px solid rgb(38, 0, 255);
     font-weight: 700;
     background-color: transparent;
     padding: 0;
@@ -36,7 +36,7 @@
     transition: border ease-in-out 0ms;
   }
   .btnContainer .btnNo:hover {
-    border: 1.5px solid rgb(0, 13, 255);
+    border: 1.5px solid rgb(255, 0, 0);
     font-weight: 700;
     background-color: transparent;
     padding: 0;
